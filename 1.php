@@ -60,14 +60,8 @@
 
                
 
-                 //check conn
-                 if(!$conn){
-                  echo "connection error". mysqli_connect_error();
-                 } else{
-                  echo "Connected";
-                 }
-
-                 //sql 
+                 
+                 //sql display
                  $sql = 'SELECT * FROM form1';
 
                  // fetch
@@ -77,6 +71,29 @@
 
                  mysqli_free_result($result);
 
+                 //delete record
+
+                 if(isset($_POST['Delete'])){
+                  $ID_TO_DELETE = mysqli_real_escape_string($conn , $_POST['ID_TO_DELETE']);
+
+                  $sql = "DELETE FROM form1 WHERE ID = $ID_TO_DELETE";
+
+                  if(mysqli_query($conn,$sql)){
+                      echo('hello');
+
+                  }else{
+                    echo "query error" . mysqli_error($conn);
+                  }
+                 }
+
+
+             
+
+
+
+
+
+
                  mysqli_close($conn);
 
             
@@ -85,7 +102,27 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<title></title>
+	<title>php</title>
+  <style >
+    .card-container{
+      display: flex;
+      flex-direction: row;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    .card{
+      margin: 15px;
+      padding: 20px;
+      border:2px solid black;
+    }
+
+
+
+    .card:hover{
+      border:4px solid red;
+    }
+  </style>
 </head>
 <body>
 	<form action="" method="POST">
@@ -111,37 +148,34 @@
         </form>
 
 
-
-        <div style="text-decoration: none;">
-              <div class="card">
-                  <ul> <?php
-                        foreach($datas as $data){ ?>
-                                          <li><?php echo $data['Name']; ?></li>
-                                          <li><?php echo $data['Email']; ?></li>
-                                          <li><?php echo $data['Age']; ?></li>
-                                          <li><?php echo $data['Description']; ?></li>
-                                          <li><?php echo $data['Created At']; ?></li>
+        <div class="card-container">
+          
+          
+            <?php foreach($datas as $data){ ?>
+                          <div class="card">
+                                    <ul>  
+                                          <li>ID:<?php echo $data['ID']; ?></li>
+                                          <li>Name:<?php echo $data['Name']; ?></li>
+                                          <li>Email:<?php echo $data['Email']; ?></li>
+                                          <li>Age:<?php echo $data['Age']; ?></li>
+                                          <li>Desc:<?php echo $data['Description']; ?></li>
+                                          <li>Created at:<?php echo $data['Created At']; ?></li>
                                     </ul>
-                    <?php  }?>
-              </div>
+                                    <form method="POST">
+                                    <input  name="ID_TO_DELETE" value="<?php echo $data['ID'];  ?>" style=" display: none">
+
+                                    <button name="Delete">Delete</button>
+                                    </form>
+
+                            
+                          </div>
+            <?php  }?>             
         </div>
 
 
-                  <div >
-                        <?php
-                        foreach($datas as $data){ ?>
-                              <div>
-                                    <ul>
-                                          <li><?php echo $data['Name']; ?></li>
-                                          <li><?php echo $data['Email']; ?></li>
-                                          <li><?php echo $data['Age']; ?></li>
-                                          <li><?php echo $data['Description']; ?></li>
-                                          <li><?php echo $data['Created At']; ?></li>
-                                    </ul>
-                              </div>
 
-                            
-                     <?php  }?>
-                  </div>
+        
+
+
 </body>
 </html>
