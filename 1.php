@@ -87,13 +87,6 @@
                  }
 
 
-             
-
-
-
-
-
-
                  mysqli_close($conn);
 
             
